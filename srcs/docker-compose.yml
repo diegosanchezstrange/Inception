@@ -5,3 +5,43 @@ services:
     container_name: nginx
     ports: 
       - "443:443"
+    networks:
+      - inception
+    volumes:
+      - wp:/var/www/wp
+  mysql:
+    build: ./requirements/mysql
+    image: inception/mysql
+    container_name: mysql
+    networks:
+      - inception
+    volumes:
+      - mysql:/var/lib/mysql
+  wordpress:
+    build: ./requirements/wordpress
+    image: inception/wordpress
+    container_name: wordpress
+    networks:
+      - inception
+    volumes:
+      - wp:/var/www/wp
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  mysql:
+    name: mysql
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USERNAME}/data/mysql
+  wp:
+    name: wp
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USERNAME}/data/wp
