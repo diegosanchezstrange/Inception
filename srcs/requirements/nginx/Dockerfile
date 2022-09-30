@@ -2,6 +2,7 @@ FROM debian:buster
 
 RUN apt-get update && apt-get install -y nginx openssl
 
+EXPOSE 443
 
 RUN mkdir /etc/nginx/ssl
 
@@ -14,7 +15,5 @@ COPY ./conf/nginx.conf /etc/nginx/
 
 RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf 
 
-
+#CMD ["sleep", "20000"]
 CMD ["nginx"]
-
-EXPOSE 443
