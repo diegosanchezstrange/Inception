@@ -3,28 +3,41 @@ services:
     build: ./requirements/nginx
     image: inception/ngnix
     container_name: nginx
+    depends_on:
+      - "wordpress"
     ports: 
       - "443:443"
     networks:
       - inception
     volumes:
       - wp:/var/www/wp
-  mysql:
-    build: ./requirements/mysql
-    image: inception/mysql
-    container_name: mysql
-    networks:
-      - inception
-    volumes:
-      - mysql:/var/lib/mysql
   wordpress:
     build: ./requirements/wordpress
     image: inception/wordpress
     container_name: wordpress
+    env_file:
+      - .env
+    depends_on:
+      - "mysql"
     networks:
       - inception
     volumes:
       - wp:/var/www/wp
+  mysql:
+    build: 
+      context: ./requirements/mysql
+      args:
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+        DB_NAME: ${DB_NAME}
+    image: inception/mysql
+    container_name: mysql
+    env_file:
+      - .env
+    networks:
+      - inception
+    volumes:
+      - mysql:/var/lib/mysql
 
 networks:
   inception:
