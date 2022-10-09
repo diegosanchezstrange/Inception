@@ -2,6 +2,10 @@ FROM debian:buster
 
 EXPOSE 9000
 
+ARG DB_USER
+ARG DB_PASS
+ARG DB_NAME
+
 RUN apt-get -y update
 RUN apt-get -y install php-cgi \
 						php-common \
@@ -40,5 +44,9 @@ RUN chown -R www-data:www-data /var/www/wp/wordpress
 RUN rm /var/www/wp/wordpress/wp-config-sample.php
 
 RUN mv /home/wp-config.php /var/www/wp/wordpress/
+
+RUN sed -i "s/DATABASE_USER/$DB_USER/g" /var/www/wp/wordpress/wp-config.php
+RUN sed -i "s/DATABASE_NAME/$DB_NAME/g" /var/www/wp/wordpress/wp-config.php
+RUN sed -i "s/DATABASE_PASS/$DB_PASS/g" /var/www/wp/wordpress/wp-config.php
 
 CMD ["php-fpm7.3", "-F"]
