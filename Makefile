@@ -1,4 +1,4 @@
-VOL_DIR	= /home/${USERNAME}/data
+VOL_DIR	= ${HOME}/data
 
 all: 
 	[ -d $(VOL_DIR)/mysql ] || mkdir -p $(VOL_DIR)/mysql
@@ -9,7 +9,16 @@ build:
 	docker-compose -f ./srcs/docker-compose.yml build --no-cache
 
 stop:
-	docker-compose -f srcs/docker-compose.yml down
+	docker stop $(shell docker ps -qa)
+
+clean:
+	docker stop $(shell docker ps -qa)
+	docker rm $(shell docker ps -qa)
+	docker rmi -f $(shell docker images -qa)
+	docker volume rm $(shell docker volume ls -q)
+	docker network rm $(shell docker network ls -q) 2>/dev/null
 
 re:
 	docker-compose -f ./srcs/docker-compose.yml up --force-recreate --no-deps -d
+
+.PHONY: clean re stop build all
