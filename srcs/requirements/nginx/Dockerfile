@@ -15,5 +15,4 @@ COPY ./conf/nginx.conf /etc/nginx/
 
 RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf 
 
-#CMD ["sleep", "20000"]
 CMD ["nginx"]

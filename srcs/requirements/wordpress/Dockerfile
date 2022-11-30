@@ -8,18 +8,19 @@ ARG DB_NAME
 
 RUN apt-get -y update
 RUN apt-get -y install php-cgi \
-						php-common \
-						php-fpm \
-						php-pear \
-						php-mbstring \
-						php-zip \
-						php-net-socket \
-						php-gd \
-						php-xml-util \
-						php-gettext \
-						php-mysql \
-						php-bcmath \
-						wget
+	php-common \
+	php-fpm \
+	php-pear \
+	php-mbstring \
+	php-zip \
+	php-net-socket \
+	php-gd \
+	php-xml-util \
+	php-gettext \
+	php-mysql \
+	php-bcmath \
+	mariadb-client \
+	wget
 
 
 #PHP FPM
@@ -27,26 +28,23 @@ COPY ./config/wp_pool.conf /etc/php/7.3/fpm/pool.d/www.conf
 RUN mkdir -p /run/php
 
 #Install WordPress
-RUN mkdir -p /var/www/wp/
-
-COPY ./config/wp-config.php /home
-
-RUN wget http://wordpress.org/latest.tar.gz
-
-RUN tar -xvf latest.tar.gz
-
-RUN rm latest.tar.gz
-
-RUN mv -f wordpress /var/www/wp/
+RUN mkdir -p /var/www/wp/wordpress
 
 RUN chown -R www-data:www-data /var/www/wp/wordpress
 
-RUN rm /var/www/wp/wordpress/wp-config-sample.php
+COPY ./config/wp-config.php /home
 
-RUN mv /home/wp-config.php /var/www/wp/wordpress/
+COPY ./tools/start.sh /home
 
-RUN sed -i "s/DATABASE_USER/$DB_USER/g" /var/www/wp/wordpress/wp-config.php
-RUN sed -i "s/DATABASE_NAME/$DB_NAME/g" /var/www/wp/wordpress/wp-config.php
-RUN sed -i "s/DATABASE_PASS/$DB_PASS/g" /var/www/wp/wordpress/wp-config.php
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
-CMD ["php-fpm7.3", "-F"]
+RUN chmod +x wp-cli.phar
+
+RUN mv -f wp-cli.phar /usr/local/bin/wp
+
+WORKDIR "/var/www/wp/wordpress"
+
+RUN chmod +x /home/start.sh
+
+CMD ["/home/start.sh"]
+#CMD ["php-fpm7.3", "-F"]

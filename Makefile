@@ -18,6 +18,11 @@ clean:
 	docker volume rm $(shell docker volume ls -q)
 	docker network rm $(shell docker network ls -q) 2>/dev/null
 
+prune:
+	docker system prune --all
+	docker volume prune
+
+
 re:
 	docker-compose -f ./srcs/docker-compose.yml up --force-recreate --no-deps -d
 
