@@ -28,9 +28,9 @@ COPY ./config/wp_pool.conf /etc/php/7.3/fpm/pool.d/www.conf
 RUN mkdir -p /run/php
 
 #Install WordPress
-RUN mkdir -p /var/www/wp/wordpress
+RUN mkdir -p /var/www/html
 
-RUN chown -R www-data:www-data /var/www/wp/wordpress
+RUN chown -R www-data:www-data /var/www/html
 
 COPY ./config/wp-config.php /home
 
@@ -42,9 +42,8 @@ RUN chmod +x wp-cli.phar
 
 RUN mv -f wp-cli.phar /usr/local/bin/wp
 
-WORKDIR "/var/www/wp/wordpress"
+WORKDIR "/var/www/html"
 
 RUN chmod +x /home/start.sh
 
 CMD ["/home/start.sh"]
-#CMD ["php-fpm7.3", "-F"]
