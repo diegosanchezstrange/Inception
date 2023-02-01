@@ -1,3 +1,4 @@
+version: "3.5"
 services:
   nginx:
     build: ./requirements/nginx
@@ -52,14 +53,14 @@ networks:
 
 volumes:
   mysql:
-    name: mysql
+    #name: mysql
     driver: local
     driver_opts:
       o: bind
       type: none
       device: ${HOME}/data/mysql
   wp:
-    name: wp
+    #name: wp
     driver: local
     driver_opts:
       o: bind

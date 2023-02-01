@@ -4,6 +4,10 @@ ARG DB_USER
 ARG DB_PASS
 ARG DB_NAME
 
+#ENV DB_USER ${DB_USER}
+#ENV DB_PASS ${DB_PASS}
+#ENV DB_NAME ${DB_NAME}
+
 RUN apt-get update && apt-get install -y mariadb-server
 
 RUN mkdir /run/mysqld
