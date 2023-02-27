@@ -3,10 +3,10 @@ VOL_DIR	= ${HOME}/data
 all: 
 	[ -d $(VOL_DIR)/mysql ] || mkdir -p $(VOL_DIR)/mysql
 	[ -d $(VOL_DIR)/wp ] || mkdir -p $(VOL_DIR)/wp
-	docker-compose -f ./srcs/docker-compose.yml up -d
+	docker-compose --env-file ./srcs/.env -f ./srcs/docker-compose.yml up -d
 
 build:
-	docker-compose -f ./srcs/docker-compose.yml build --no-cache
+	docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env build --no-cache
 
 stop:
 	docker stop $(shell docker ps -qa)
