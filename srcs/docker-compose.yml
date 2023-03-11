@@ -6,25 +6,27 @@ services:
     container_name: nginx
     depends_on:
       - "wordpress"
-        #env_file:
-        #- .env
-    ports: 
+    ports:
       - "443:443"
     networks:
       - inception
     volumes:
       - wp:/var/www/html
   wordpress:
-    build: 
+    build:
       context: ./requirements/wordpress
       args:
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
         DB_NAME: ${DB_NAME}
+        WP_ADMIN_NAME: ${WP_ADMIN_NAME}
+        WP_ADMIN_PASS: ${WP_ADMIN_PASS}
+        WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+        WP_USER_NAME: ${WP_USER_NAME}
+        WP_USER_PASS: ${WP_USER_PASS}
+        WP_USER_EMAIL: ${WP_USER_EMAIL}
     image: inception/wordpress
     container_name: wordpress
-      #env_file:
-      #- .env
     depends_on:
       - "mysql"
     networks:
@@ -32,7 +34,7 @@ services:
     volumes:
       - wp:/var/www/html
   mysql:
-    build: 
+    build:
       context: ./requirements/mysql
       args:
         DB_USER: ${DB_USER}
@@ -40,8 +42,6 @@ services:
         DB_NAME: ${DB_NAME}
     image: inception/mysql
     container_name: mysql
-      #env_file:
-      #- .env
     networks:
       - inception
     volumes:
@@ -53,14 +53,12 @@ networks:
 
 volumes:
   mysql:
-    #name: mysql
     driver: local
     driver_opts:
       o: bind
       type: none
       device: ${HOME}/data/mysql
   wp:
-    #name: wp
     driver: local
     driver_opts:
       o: bind
