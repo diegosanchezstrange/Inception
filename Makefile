@@ -11,12 +11,9 @@ build:
 stop:
 	docker stop $(shell docker ps -qa)
 
-clean:
-	docker stop $(shell docker ps -qa)
-	docker rm $(shell docker ps -qa)
-	docker rmi -f $(shell docker images -qa)
-	docker volume rm $(shell docker volume ls -q)
-	docker network rm $(shell docker network ls -q) 2>/dev/null
+clean: stop
+	rm -rf $(VOL_DIR)
+	docker rm $(shell docker ps -qa) ; docker rmi -f $(shell docker images -qa); docker volume rm $(shell docker volume ls -q); docker network rm $(shell docker network ls -q) 2>/dev/null
 
 prune:
 	docker system prune --all

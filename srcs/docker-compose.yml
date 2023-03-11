@@ -42,6 +42,7 @@ services:
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
         DB_NAME: ${DB_NAME}
+        DB_ROOT_PASS: ${DB_ROOT_PASS}
     image: inception/mysql
     container_name: mysql
     networks:
