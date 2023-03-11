@@ -50,8 +50,6 @@ RUN mkdir -p /var/www/html
 
 RUN chown -R www-data:www-data /var/www/html
 
-COPY ./config/wp-config.php /home
-
 COPY ./tools/start.sh /home
 
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
