@@ -12,6 +12,7 @@ services:
       - inception
     volumes:
       - wp:/var/www/html
+    restart: always
   wordpress:
     build:
       context: ./requirements/wordpress
@@ -33,6 +34,7 @@ services:
       - inception
     volumes:
       - wp:/var/www/html
+    restart: always
   mysql:
     build:
       context: ./requirements/mysql
@@ -46,6 +48,7 @@ services:
       - inception
     volumes:
       - mysql:/var/lib/mysql
+    restart: always
 
 networks:
   inception:
